@@ -3,7 +3,7 @@
 import { TextInput, PasswordInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import Link from 'next/link';
-import { Button } from 'tp-kit/components';
+import { Button, useZodI18n } from 'tp-kit/components';
 import {z} from "zod";
 
 
@@ -15,6 +15,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function ConnexionPage() {
+    useZodI18n(z);
     const form = useForm<FormValues>({
         validate: zodResolver(schema),
         initialValues: {

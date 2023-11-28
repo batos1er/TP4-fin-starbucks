@@ -27,7 +27,7 @@ export default function InscriptionPage() {
     return (
     <form className='flex flex-col justify-center' onSubmit={form.onSubmit((values) => console.log(values))}>
         <h1 className='font-bold'>INSCRIPTION</h1>
-        <TextInput withAsterisk className="mt-10" label="Nom" placeholder="Entrez un nom" {...form.getInputProps('nom')}/>
+        <TextInput withAsterisk className="mt-10" label="Nom" description='Le nom qui sera utilisé pour vos commandes' placeholder="Entrez un nom" {...form.getInputProps('nom')}/>
         <TextInput withAsterisk className="mt-6" label="Email" placeholder="Entrez une adresse mail" {...form.getInputProps('email')}/>
         <PasswordInput withAsterisk className="mt-6" label="Mot de Passe" {...form.getInputProps('mdp')}/>
         <Button type="submit" className="mt-6 center">S'inscrire</Button>

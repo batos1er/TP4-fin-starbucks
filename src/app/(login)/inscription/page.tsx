@@ -3,7 +3,8 @@
 import { TextInput, PasswordInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import Link from 'next/link';
-import { Button } from 'tp-kit/components';
+import { useState } from 'react';
+import { Button, NoticeMessage, NoticeMessageData } from 'tp-kit/components';
 import {z} from "zod";
 
 const schema = z.object({
@@ -24,8 +25,17 @@ export default function InscriptionPage() {
         },
       });
 
+    const [notices, setNotices] = useState<NoticeMessageData[]>([]);
+
     return (
-    <form className='flex flex-col justify-center' onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form className='flex flex-col justify-center' onSubmit={form.onSubmit((values) => {
+            setNotices([{type:"success",message:"kéké"}]);
+            console.log(values)
+
+        })}>
+        {notices.map((notice) => (
+            <NoticeMessage type={notice.type} message={notice.message}/>
+        ))}
         <h1 className='font-bold'>INSCRIPTION</h1>
         <TextInput withAsterisk className="mt-10" label="Nom" description='Le nom qui sera utilisé pour vos commandes' placeholder="Entrez un nom" {...form.getInputProps('nom')}/>
         <TextInput withAsterisk className="mt-6" label="Email" placeholder="Entrez une adresse mail" {...form.getInputProps('email')}/>

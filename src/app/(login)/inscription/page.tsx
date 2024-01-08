@@ -2,8 +2,10 @@
 
 import { TextInput, PasswordInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, NoticeMessage, NoticeMessageData, useZodI18n } from 'tp-kit/components';
 import {z} from "zod";
 
@@ -17,6 +19,7 @@ type FormValues = z.infer<typeof schema>;
 
 export default function InscriptionPage() {
     useZodI18n(z);
+    const supabase = createClientComponentClient();
     const form = useForm<FormValues>({
         validate: zodResolver(schema),
         initialValues: {
@@ -26,13 +29,35 @@ export default function InscriptionPage() {
         },
       });
 
+
+
+      const handleSignUp = useCallback(async function (values: FormValues) {
+        setNotices([{type:"success",message:"compté créé avec succès"}]);
+                    // console.log(values);
+        
+                    const { data, error } = await supabase.auth.signUp(
+                        {
+                          email: values.email,
+                          password: values.mdp,
+                          options: {
+                            emailRedirectTo: 'http://localhost:3000/api/auth/callback',
+                            data: {
+                              name: values.nom,
+                            }
+                          }
+                        }
+                      );
+                    if(error){
+                        setNotices([{type:"error", message:error.message}]);
+                    }
+      }, []);
+
+      
+
     const [notices, setNotices] = useState<NoticeMessageData[]>([]);
 
     return (
-            <form className='flex flex-col justify-center' onSubmit={form.onSubmit((values) => {
-                    setNotices([{type:"success",message:"kéké"}]);
-                    console.log(values)
-                })}>
+            <form className='flex flex-col justify-center' onSubmit={form.onSubmit(handleSignUp)}>
                 {notices.map((notice) => (
                     <NoticeMessage type={notice.type} message={notice.message}/>
                 ))}

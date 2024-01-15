@@ -1,7 +1,7 @@
 "use client";
 
-import { FC, memo, useCallback } from "react";
-import { ProductCartLine, FormattedPrice, Button } from "tp-kit/components";
+import { FC, memo, useCallback, useState } from "react";
+import { ProductCartLine, FormattedPrice, Button, NoticeMessageData, NoticeMessage } from "tp-kit/components";
 import {
   removeLine,
   updateLine,
@@ -18,8 +18,13 @@ const Cart: FC<Props> = memo(function () {
   const wrapperClasses = "bg-white rounded-lg p-6 shadow-xl space-y-12";
 
   const handleCreateOrder = useCallback(async () => {
-    await createOrder(useCart.getState());
-    clearCart();
+    const response = await createOrder(useCart.getState());
+    if(response.error){
+      setNotices([{type:"error", message: response.error}]);
+    }
+    else{
+      clearCart();
+    }
   }, []);
 
   if (lines.length === 0)
@@ -31,8 +36,12 @@ const Cart: FC<Props> = memo(function () {
       </div>
     );
 
+    const [notices, setNotices] = useState<NoticeMessageData[]>([]);
   return (
     <div className={wrapperClasses}>
+      {notices.map((notice) => (
+                    <NoticeMessage type={notice.type} message={notice.message}/>
+        ))}
       <h2 className="text-sm uppercase font-bold tracking-wide">Mon panier</h2>
 
       <div className="space-y-4">

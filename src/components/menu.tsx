@@ -7,10 +7,18 @@ import { ShoppingBag, X, User } from "@phosphor-icons/react";
 import { Cart } from "./cart";
 import { CartCounter } from "./cart-counter";
 import Link from "next/link";
+import supabase from "../utils/supabase";
 
 type Props = {};
 
 const Menu: FC<Props> = memo(function () {
+
+  // supabase.auth.onAuthStateChange((event, session) => {
+  //   setTimeout(async () => {
+  //     // await on other Supabase function here
+  //     // this runs right after the callback has finished
+  //   }, 0)
+  // })
   return (
     <MenuBar
     trailing={

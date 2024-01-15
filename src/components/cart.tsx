@@ -26,7 +26,7 @@ const Cart: FC<Props> = memo(function () {
       clearCart();
     }
   }, []);
-
+  const [notices, setNotices] = useState<NoticeMessageData[]>([]);
   if (lines.length === 0)
     return (
       <div className={wrapperClasses}>
@@ -36,7 +36,7 @@ const Cart: FC<Props> = memo(function () {
       </div>
     );
 
-    const [notices, setNotices] = useState<NoticeMessageData[]>([]);
+  
   return (
     <div className={wrapperClasses}>
       {notices.map((notice) => (

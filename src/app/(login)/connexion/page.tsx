@@ -39,7 +39,6 @@ export default function ConnexionPage() {
         }
         else{
             router.refresh();
-            router.push("/");
         }
     }
     const [notices, setNotices] = useState<NoticeMessageData[]>([]);

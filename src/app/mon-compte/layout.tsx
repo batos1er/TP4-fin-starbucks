@@ -12,7 +12,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const orders = await prisma.order.findMany();
   const supabase = createServerComponentClient({cookies});
   const sessionUsers = await getUser(supabase);
-  console.log(sessionUsers);
   if (!sessionUsers){
     redirect("/connexion");
   }

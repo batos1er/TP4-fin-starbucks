@@ -9,12 +9,15 @@ import { redirect } from "next/navigation";
 import Deconnexion from "./deconnexion";
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const orders = await prisma.order.findMany();
+  
   const supabase = createServerComponentClient({cookies});
   const sessionUsers = await getUser(supabase);
   if (!sessionUsers){
     redirect("/connexion");
   }
+  const orders = await prisma.order.findMany({
+    where : {userId : sessionUsers.id}
+  });
 
 
   return (<>

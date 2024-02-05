@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, Fragment } from "react";
+import { FC, memo, Fragment, useEffect, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuBar, Button } from "tp-kit/components";
 import { ShoppingBag, X, User } from "@phosphor-icons/react";
@@ -13,11 +13,16 @@ import getUser from "../utils/supabase";
 
 type Props = {};
 
-const Menu: FC<Props> = memo(async function () {
+const Menu: FC<Props> = memo(function () {
 
   const supabase = createClientComponentClient();
 
-  const user = await getUser(supabase);
+  const [isLogged, setIsLogged] = useState(false);
+  useEffect(function() {
+    getUser(supabase).then(function(user) {
+      setIsLogged(user !== null)
+    })
+  }, []);
   // supabase.auth.onAuthStateChange((event, session) => {
   //   setTimeout(async () => {
   //     // await on other Supabase function here
@@ -34,7 +39,7 @@ const Menu: FC<Props> = memo(async function () {
             </Button>
           </Link>
 
-          {user &&
+          {isLogged &&
             <Popover as="div" className="flex justify-end">
               {({ open }) => (
                 <>
